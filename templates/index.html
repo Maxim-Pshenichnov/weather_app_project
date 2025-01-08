@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Прогноз погоды{% endblock %}
+
+{% block content %}
+    <h1>Прогноз погоды</h1>
+    <form method="post">
+        <input type="text" name="city" placeholder="Введите город" required>
+        <button type="submit">Получить прогноз</button>
+    </form>
+    <div class="units-selector">
+        <a href="{{ url_for('index', units='celcius') }}" {% if units == 'celcius' %}class="active"{% endif %}>Градусы Цельсия</a>
+        <a href="{{ url_for('index', units='farenheit') }}" {% if units == 'farenheit' %}class="active"{% endif %}>Градусы Фаренгейта</a>
+    </div>
+  {% if city %}
+    <h2>Погода в городе: {{city}}</h2>
+     <div class="map-container" id="map" style="height:300px;"></div>
+
+      {% if chart_data %}
+          <canvas id="temperatureChart"></canvas>
+      {% endif %}
+
+    {% if weather_data %}
+        <h3>Подробная информация:</h3>
+        <div class="weather-forecast">
+          {% for day in weather_data %}
+            <div class="weather-item">
+              <p>Дата: {{ day.date }}</p>
+              <img src="https://openweathermap.org/img/w/{{ day.icon }}.png" alt="{{ day.description }}">
+              <p>Температура: {{ day.temp }} {{'°C' if units == 'celcius' else '°F'}}</p>
+              <p>Описание: {{ day.description }}</p>
+            </div>
+          {% endfor %}
+        </div>
+    {% else %}
+        <p class="error">{{error}}</p>
+    {% endif %}
+{% endif %}
+   {% if chart_data %}
+  <script>
+  const chartData = JSON.parse('{{ chart_data|safe }}');
+  const ctx = document.getElementById('temperatureChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: chartData.labels,
+          datasets: [{
+              label: 'Температура',
+              data: chartData.temps,
+              borderColor: 'rgb(75, 192, 192)',
+              tension: 0.1
+          }]
+      },
+          options: {
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Время'
+            }
+          },
+            y: {
+              title: {
+                display: true,
+                text: 'Температура ' + '{{"°C" if units == "celcius" else "°F"}}'
+              }
+           }
+       }
+    }
+  });
+</script>
+  {% endif %}
+{% endblock %}

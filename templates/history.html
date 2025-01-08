@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}История запросов{% endblock %}
+
+{% block content %}
+    <h1>История запросов</h1>
+    {% if history %}
+        <ul>
+            {% for city in history %}
+                <li>{{ city }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет истории запросов.</p>
+    {% endif %}
+{% endblock %}
