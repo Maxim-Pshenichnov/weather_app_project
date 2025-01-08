@@ -9,8 +9,8 @@
         <button type="submit">Получить прогноз</button>
     </form>
     <div class="units-selector">
-        <a href="{{ url_for('index', units='celcius') }}" {% if units == 'celcius' %}class="active"{% endif %}>Градусы Цельсия</a>
-        <a href="{{ url_for('index', units='farenheit') }}" {% if units == 'farenheit' %}class="active"{% endif %}>Градусы Фаренгейта</a>
+        <a href="{{ url_for('index', units='metric') }}" {% if units == 'metric' %}class="active"{% endif %}>Градусы Цельсия</a>
+        <a href="{{ url_for('index', units='imperial') }}" {% if units == 'imperial' %}class="active"{% endif %}>Градусы Фаренгейта</a>
     </div>
   {% if city %}
     <h2>Погода в городе: {{city}}</h2>
@@ -27,7 +27,7 @@
             <div class="weather-item">
               <p>Дата: {{ day.date }}</p>
               <img src="https://openweathermap.org/img/w/{{ day.icon }}.png" alt="{{ day.description }}">
-              <p>Температура: {{ day.temp }} {{'°C' if units == 'celcius' else '°F'}}</p>
+              <p>Температура: {{ day.temp }} {{'°C' if units == 'metric' else '°F'}}</p>
               <p>Описание: {{ day.description }}</p>
             </div>
           {% endfor %}
@@ -62,7 +62,7 @@
             y: {
               title: {
                 display: true,
-                text: 'Температура ' + '{{"°C" if units == "celcius" else "°F"}}'
+                text: 'Температура ' + '{{"°C" if units == "metric" else "°F"}}'
               }
            }
        }

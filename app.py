@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    units = request.args.get("units", "celcius")
+    units = request.args.get("units", "metric")
     if request.method == "POST":
         city = request.form["city"]
         weather_data = weather_api.get_weather(city, units)

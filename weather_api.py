@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv('OPENWEATHER_API_KEY')
 
-def get_weather(city, units='celsius'):
+def get_weather(city, units='metric'):
     url = f"https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units={units}"
     response = requests.get(url)
     if response.status_code == 200:
@@ -25,7 +25,7 @@ def get_weather(city, units='celsius'):
     else:
         return None
 
-def get_forecast_data(city, units="celsius"):
+def get_forecast_data(city, units="metric"):
     url = f"https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units={units}"
     response = requests.get(url)
     if response.status_code == 200:
